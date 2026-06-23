@@ -1,0 +1,19 @@
+# Python virtual environment
+backend/venv/
+venv/
+__pycache__/
+*.pyc
+
+# Trained model files
+backend/tiny_crm_router/
+
+# React / Node
+frontend/node_modules/
+frontend/dist/
+
+# Environment files
+.env
+*.env
+
+# Mac files
+.DS_Store
