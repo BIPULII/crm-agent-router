@@ -90,3 +90,23 @@ button:disabled {
 .history-item p {
   margin: 6px 0;
 }
+
+.action-box {
+  margin-top: 16px;
+  padding: 16px;
+  background: #ecfdf5;
+  border-radius: 10px;
+  border-left: 5px solid #10b981;
+}
+
+.action-box h3 {
+  margin-top: 0;
+  color: #065f46;
+}
+
+.action-box pre {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+}

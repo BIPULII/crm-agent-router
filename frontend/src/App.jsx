@@ -7,7 +7,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // New state to store previous predictions
+  // Store previous predictions
   const [history, setHistory] = useState([]);
 
   const handlePredict = async () => {
@@ -48,6 +48,7 @@ function App() {
           intent: data.intent,
           confidence: data.confidence,
           route: data.route,
+          actionResult: data.action_result?.message || "No action result",
         },
         ...previousHistory,
       ]);
@@ -71,7 +72,7 @@ function App() {
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Example: Summarize this customer conversation"
+          placeholder="Example: Create a ticket for this customer complaint"
         />
 
         <button onClick={handlePredict} disabled={loading}>
@@ -83,16 +84,33 @@ function App() {
         {result && (
           <div className="result-box">
             <h2>Prediction Result</h2>
+
             <p>
               <strong>Intent:</strong> {result.intent}
             </p>
+
             <p>
               <strong>Confidence:</strong>{" "}
               {(result.confidence * 100).toFixed(2)}%
             </p>
+
             <p>
               <strong>Route:</strong> {result.route}
             </p>
+
+            {result.action_result && (
+              <div className="action-box">
+                <h3>Action Result</h3>
+
+                <p>
+                  <strong>Status:</strong> {result.action_result.message}
+                </p>
+
+                <pre>
+                  {JSON.stringify(result.action_result.data, null, 2)}
+                </pre>
+              </div>
+            )}
           </div>
         )}
 
@@ -105,15 +123,22 @@ function App() {
                 <p>
                   <strong>Message:</strong> {item.message}
                 </p>
+
                 <p>
                   <strong>Intent:</strong> {item.intent}
                 </p>
+
                 <p>
                   <strong>Confidence:</strong>{" "}
                   {(item.confidence * 100).toFixed(2)}%
                 </p>
+
                 <p>
                   <strong>Route:</strong> {item.route}
+                </p>
+
+                <p>
+                  <strong>Action:</strong> {item.actionResult}
                 </p>
               </div>
             ))}
