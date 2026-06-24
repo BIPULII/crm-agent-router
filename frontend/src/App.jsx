@@ -57,7 +57,15 @@ function App() {
     } finally {
       setLoading(false);
     }
+
+    
   };
+  const handleReset = () => {
+      setMessage("");
+      setResult(null);
+      setHistory([]);
+      setError("");
+    };
 
   return (
     <div className="page">
@@ -76,8 +84,16 @@ function App() {
         />
 
         <button onClick={handlePredict} disabled={loading}>
-          {loading ? "Predicting..." : "Predict Intent"}
+          {loading ? "Analyzing intent..." : "Predict Intent"}
         </button>
+        <button onClick={handleReset} className="reset-btn">
+          Reset
+        </button>
+        {loading && (
+          <p className="loading-text">
+            🤖 Thinking... Routing request to AI model...
+          </p>
+        )}
 
         {error && <p className="error">{error}</p>}
 
@@ -91,7 +107,19 @@ function App() {
 
             <p>
               <strong>Confidence:</strong>{" "}
-              {(result.confidence * 100).toFixed(2)}%
+              <span
+                style={{
+                  color:
+                    result.confidence > 0.8
+                      ? "green"
+                      : result.confidence > 0.5
+                        ? "orange"
+                        : "red",
+                  fontWeight: "bold",
+                }}
+              >
+                {(result.confidence * 100).toFixed(2)}%
+              </span>
             </p>
 
             <p>
@@ -106,9 +134,7 @@ function App() {
                   <strong>Status:</strong> {result.action_result.message}
                 </p>
 
-                <pre>
-                  {JSON.stringify(result.action_result.data, null, 2)}
-                </pre>
+                <pre>{JSON.stringify(result.action_result.data, null, 2)}</pre>
               </div>
             )}
           </div>
