@@ -1,3 +1,6 @@
+from database import save_ticket, save_followup, save_escalation
+
+
 def handle_action(intent, message):
     if intent == "search_customer_info":
         return {
@@ -21,21 +24,25 @@ def handle_action(intent, message):
         }
 
     elif intent == "create_lead_or_ticket":
+        ticket_id = save_ticket(message)
+
         return {
             "type": "ticket_created",
-            "message": "Support ticket TCK-0001 created successfully.",
+            "message": f"Support ticket TCK-{ticket_id:04d} created successfully.",
             "data": {
-                "ticket_id": "TCK-0001",
+                "ticket_id": f"TCK-{ticket_id:04d}",
                 "status": "Open"
             }
         }
 
     elif intent == "schedule_followup":
+        followup_id = save_followup(message)
+
         return {
             "type": "followup_scheduled",
-            "message": "Follow-up task FUP-0001 scheduled successfully.",
+            "message": f"Follow-up task FUP-{followup_id:04d} scheduled successfully.",
             "data": {
-                "followup_id": "FUP-0001",
+                "followup_id": f"FUP-{followup_id:04d}",
                 "status": "Scheduled"
             }
         }
@@ -52,10 +59,13 @@ def handle_action(intent, message):
         }
 
     else:
+        escalation_id = save_escalation(message)
+
         return {
             "type": "human_escalation",
-            "message": "Request escalated to a human agent.",
+            "message": f"Request ESC-{escalation_id:04d} escalated to a human agent.",
             "data": {
+                "escalation_id": f"ESC-{escalation_id:04d}",
                 "status": "Escalated",
                 "priority": "Medium"
             }

@@ -17,3 +17,5 @@ frontend/dist/
 
 # Mac files
 .DS_Store
+
+backend/crm_router.db
