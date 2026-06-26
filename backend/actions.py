@@ -1,7 +1,13 @@
+# backend/actions.py
+
 from database import save_ticket, save_followup, save_escalation
 
-
 def handle_action(intent, message):
+    """
+    Maps a predicted intent to a corresponding action and stores relevant data in the database.
+    Returns a structured dictionary including type, message, and data.
+    """
+
     if intent == "search_customer_info":
         return {
             "type": "customer_search",
@@ -24,6 +30,7 @@ def handle_action(intent, message):
         }
 
     elif intent == "create_lead_or_ticket":
+        # Save the ticket in the database and generate a ticket ID
         ticket_id = save_ticket(message)
 
         return {
@@ -36,6 +43,7 @@ def handle_action(intent, message):
         }
 
     elif intent == "schedule_followup":
+        # Save the follow-up task in the database
         followup_id = save_followup(message)
 
         return {
@@ -59,6 +67,7 @@ def handle_action(intent, message):
         }
 
     else:
+        # For any unknown or low-confidence intent, escalate to human
         escalation_id = save_escalation(message)
 
         return {
